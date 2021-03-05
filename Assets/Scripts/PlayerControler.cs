@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerControler : MonoBehaviour
 {
@@ -23,10 +24,17 @@ public class PlayerControler : MonoBehaviour
 
     public Animator gunAnim;
 
-    private int currentHealth;
+    public int currentHealth;
     public int maxHealth = 100;
     public GameObject deadScreen;
-    private bool hasDied;
+    public bool hasDied;
+
+    public Text healthText, ammoText, scoreText, livesText;
+
+    public int currentLives = 3;
+    public int currentScore = 0;
+
+    public Animator anim;
 
     private void  Awake()
     {
@@ -37,6 +45,12 @@ public class PlayerControler : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        healthText.text = currentHealth.ToString() + "%";
+
+        ammoText.text = currentAmmo.ToString();
+
+        livesText.text = currentLives.ToString();
+        scoreText.text = currentScore.ToString();
     }
 
     // Update is called once per frame
@@ -44,7 +58,7 @@ public class PlayerControler : MonoBehaviour
     {
         if (!hasDied)
         {
-moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         Vector3 moveHorizontal = transform.up * -moveInput.x;
 
@@ -63,7 +77,7 @@ moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             if(currentAmmo > 0) 
             {
                 Ray ray = viewCam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
-            RaycastHit hit;
+                RaycastHit hit;
             if(Physics.Raycast(ray, out hit))
             {
                 Instantiate(bulletImpact, hit.point, transform.rotation);
@@ -79,8 +93,17 @@ moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             }
                 currentAmmo--;
                 gunAnim.SetTrigger("Shoot");
+                 UpdateAmmoUI();
             }  
           }
+        if(moveInput != Vector2.zero)
+            {
+                anim.SetBool("isMoving", true);
+            }
+            else
+            {
+                anim.SetBool("isMoving", false);
+            }
         }
     }
 
@@ -92,7 +115,10 @@ moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         {
             deadScreen.SetActive(true);
             hasDied = true;
+            currentHealth = 0;
+
         }
+        healthText.text = currentHealth.ToString() + "%";
     }
     public void AddHealth(int healAmount)
     {
@@ -101,5 +127,24 @@ moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         {
             currentHealth = maxHealth;
         }
+    }
+
+    public void UpdateAmmoUI()
+    {
+        ammoText.text = currentAmmo.ToString();
+    }
+    public void UpdateHealth()
+    {
+        healthText.text = currentHealth.ToString() + "%";
+    }
+
+    public void UpdateLives()
+    {
+        healthText.text = currentLives.ToString();
+    }
+
+    public void UpdateScore()
+    {
+        scoreText.text = currentScore.ToString();
     }
 }

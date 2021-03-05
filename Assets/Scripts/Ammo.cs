@@ -23,7 +23,8 @@ public class Ammo : MonoBehaviour
         if(other.tag == "Player")
         {
             Debug.Log("Vze amoto manqche");
-            PlayerControler.instance.currentAmmo += 25;
+            PlayerControler.instance.currentAmmo += ammoAmount;
+            PlayerControler.instance.UpdateAmmoUI();
             Destroy(gameObject);
         }
     }
