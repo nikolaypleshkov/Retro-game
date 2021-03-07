@@ -129,20 +129,26 @@ public class PlayerControler : MonoBehaviour
         }
     }
 
+    //method for updating ammo  everytime when its awake
+
     public void UpdateAmmoUI()
     {
         ammoText.text = currentAmmo.ToString();
     }
+    //methods for updating health everytime when its awake
     public void UpdateHealth()
     {
         healthText.text = currentHealth.ToString() + "%";
     }
 
+    //still not working!!!
     public void UpdateLives()
     {
         healthText.text = currentLives.ToString();
     }
 
+
+    //updating score every time player kill/destroy objects - 100points
     public void UpdateScore()
     {
         scoreText.text = currentScore.ToString();
